@@ -1,0 +1,20 @@
+{
+  "name": "test-node-source-map",
+  "version": "0.0.1",
+  "description": "Test clang and wasm-merge",
+  "main": "",
+  "repository": "git@github.com:winksaville/test-node-source-map.git",
+  "author": "Wink Saville <wink@saville.com>",
+  "license": "MIT",
+  "scripts": {
+    "pretest": "tsc -p hello.tsconfig.json",
+    "test": "node hello.js",
+    "pretest:dbg": "yarn pretest",
+    "test:dbg": "node --inspect --debug-brk hello.js"
+  },
+  "dependencies": {
+    "@types/node": "^7.0.13",
+    "source-map-support": "^0.4.14",
+    "typescript": "^2.2.2"
+  }
+}
