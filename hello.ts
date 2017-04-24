@@ -1,19 +1,37 @@
 require('source-map-support').install();
 
-function stackTrace(lines: number) {
-    let err = new Error();
-    Error.captureStackTrace(err, stackTrace);
-    //console.log(err.stack);
-    let stack = err.stack.split("\n");
-    for (let i = 1; i <= lines; i++) {
-        console.log(`${stack[i].trim()}`);
+// Opaque traceStack
+class TraceStack {
+    private stackState: string;
+
+    public constructor() {
     }
+
+    public trace() {
+        let saveStackTraceLimit = Error.stackTraceLimit;
+        Error.stackTraceLimit = 2;
+        let err = new Error();
+        Error.captureStackTrace(err, this.trace);
+        Error.stackTraceLimit = saveStackTraceLimit;
+        //console.log(`${err.stack}`);
+        this.stackState = err.stack;
+    }
+
+    public getTrace(): string {
+        //console.log(`${this.stackState}`);
+        let stack = this.stackState.split("\n");
+        return `${stack[1].trim()}`;
+    }
+
 }
 
+let ts = new TraceStack();
+
 function main() {
-    console.log("hi line 14");
-    stackTrace(1);
-    console.log("hi line 16");
+    console.log("hi line 31");
+    ts.trace();
+    console.log("hi line 33");
+    console.log(`${ts.getTrace()}`);
 }
 
 main();
