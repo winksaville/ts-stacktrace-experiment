@@ -1,37 +1,35 @@
 require('source-map-support').install();
 
-// Opaque traceStack
-class TraceStack {
-    private stackState: string;
+// Opaque TraceMarker
+class TraceMarker {
+    private _stackState: string;
 
     public constructor() {
     }
 
-    public trace() {
+    public mark() {
         let saveStackTraceLimit = Error.stackTraceLimit;
         Error.stackTraceLimit = 2;
         let err = new Error();
-        Error.captureStackTrace(err, this.trace);
+        Error.captureStackTrace(err, this.mark);
         Error.stackTraceLimit = saveStackTraceLimit;
         //console.log(`${err.stack}`);
-        this.stackState = err.stack;
+        this._stackState = err.stack;
     }
 
-    public getTrace(): string {
+    public getMark(): string {
         //console.log(`${this.stackState}`);
-        let stack = this.stackState.split("\n");
+        let stack = this._stackState.split("\n");
         return `${stack[1].trim()}`;
     }
-
 }
 
-let ts = new TraceStack();
 
 function main() {
-    console.log("hi line 31");
-    ts.trace();
-    console.log("hi line 33");
-    console.log(`${ts.getTrace()}`);
+    let tm = new TraceMarker();
+    console.log("hi line 30");
+    tm.mark(); console.log(`${tm.getMark()}`);
+    console.log("hi line 32");
 }
 
 main();
